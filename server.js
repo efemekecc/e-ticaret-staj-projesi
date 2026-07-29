@@ -32,7 +32,7 @@ app.get('/api/urunler/category/:kategoriAdi', async (req, res) => {
     const sqlSorgusu = `
             SELECT products.* 
             FROM products 
-            JOIN categories ON products.category_id = categories.id 
+            LEFT JOIN categories ON products.category_id = categories.id 
             WHERE categories.name = ?
         `;
     
