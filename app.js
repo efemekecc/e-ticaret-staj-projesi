@@ -5,6 +5,8 @@ const istatistikEkrani = document.querySelector("#istatistik-ekrani");
 
 let urunler = [];
 
+let sepet = JSON.parse(localStorage.getItem("sepet")) || [];
+
 async function urunleriGetir() {
     try {
         const cevap = await fetch('http://localhost:3000/api/urunler');
@@ -81,9 +83,8 @@ function ekranaBas(liste) {
                     <img src= "${urun.image}" style = "max-width: 100%; height: 175px; object-fit: contain; margin-bottom: 15px;">
                     <h4 style = "margin: 10px 0; font-size: medium; color: #333;">${urun.title.substring(0, 20)}...</h4>
                 </a>
-
                 <p style="font-size: large; color: #27ae60; font-weight: bold; margin: 10px 0;">₺${urun.price}</p>
-                <button style="background: #2c3e50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;">Sepete Ekle</button>
+                <button onclick ="sepeteEkle(${urun.id})" style="background: #2c3e50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;">Sepete Ekle</button>
             </div>
         `;
     }).join("");
@@ -105,3 +106,67 @@ siralamaMenu.addEventListener("change", (olay) => {
     }
     ekranaBas(urunler);
 });
+
+function sepeteEkle(id) {
+    const eklenenUrun = urunler.find(urun => urun.id === id);
+
+    if(eklenenUrun) {
+        sepet.push(eklenenUrun);
+        localStorage.setItem("sepet", JSON.stringify(sepet));
+        sepetiGuncelle();
+        alert(`${ekleneUrun.title.substring(0, 15)} sepete eklendi`);
+    }
+}
+function sepetiGuncelle() {
+    const sepetSayaci = document.getElementById("sepet-sayma");
+    if (sepetSayaci) {
+        sepetSayaci.innerText = `Sepet: ${sepet.length} Ürün`;
+    }
+}
+sepetiGuncelle();
+
+function sepetiAc() {
+    document.getElementById("sepet-modal").style.display = "block";
+    sepetiEkranaBas();
+}
+
+function sepetiKapat() {
+    document.getElementById("sepet-modal").style.display = "none";
+}
+
+function sepetiEkranaBas () {
+    const sepetIcerik = document.querySelector("#sepet-icerik");
+    const sepetToplam = document.querySelector("#sepet-toplam");
+
+    if (sepet.length === 0) {
+        sepetIcerik.innerHTML = "<p style='text-align: center; color:#7f8c8d;'>Sepetinizde ürün bulunmuyor.</p>";
+        sepetToplam.innerHTML = "₺0.00";
+        return;
+    }
+    let toplamFiyat = 0;
+
+    sepetIcerik.innerHTML = sepet.map((urun, index) => {
+        toplamFiyat += Number(urun.price);
+        return `
+            <div style = "display: flex; justify-content: space-between; align-items: center; amrgin-bottom: 12px; border-bottom: 1px solid #f1f2f6; padding-bottom: 8px;">
+                <div style = "display: flex; align-items: center; gap: 10px">
+                    <img src = "${urun.image}" style = "width: 40px; height: 40px; object-fit: contain; border-radius: 5px;">
+                    <span style = "font-size: medium; color: #333;"> ${urun.title.substring(0, 15)}...</span>
+                </div>
+                <div style = "display: flex; align-items: center; gap: 12px;">
+                    <strong style = "color: #27ae60;">₺${urun.price}</strong>
+                    <button onclick = "sepettenSil(${index})" style = "background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; padding: 4px 8px; font-weight: bold; transition: 0.2s;">X</button>
+                </div>
+            </div>
+            `;
+    }).join("");
+
+    sepetToplam.innerText = `₺${toplamFiyat.toFixed(2)}`;
+}
+function sepettenSil(index) {
+    sepet.splice(index, 1);
+    localStorage.setItem("sepet", JSON.stringify(sepet));
+
+    sepetiGuncelle();
+    sepetiEkranaBas();
+}

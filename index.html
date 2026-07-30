@@ -9,7 +9,7 @@
     <div style="font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; padding: 20px; color: #333;">
         <div style="display: flex; justify-content: space-between; align-items: center; background: #2c3e50; color: white; padding: 15px 30px; border-radius: 8px; margin-bottom: 20px;">
             <h1 style="margin: 0; font-size: large;">Mekec Store</h1>
-            <div style="font-weight: bold; font-size: medium; background: #e74c3c; padding: 8px 15px; border-radius: 5px;">
+            <div id="sepet-sayma" onclick="sepetiAc()" style="font-weight: bold; font-size: medium; background: #e74c3c; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
                 Sepet: 0 Ürün    
             </div>
         </div>
@@ -31,6 +31,16 @@
         <div id="urun-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
             <h2 style="text-align: center; width: 100%;">Ürünler Yükleniyor...</h2>
         </div>
+    </div>
+    <div id="sepet-modal" style="display: none; position: absolute; top: 70px; right: 20px; width: 330px; background: white; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height: 400px; overflow-y: auto;">
+        <h3 style="margin-top: 10px; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px; color: #2c3e50;">Sepetiniz:</h3>
+
+        <div id="sepet-icerik"></div>
+        <div style="border-top: 2px solid #f1f2f6; margin-top: 15px; padding-top: 15px; font-weight: bold; text-align: right; font-size: medium;">
+            Toplam: <span id="sepet-toplam" style="color: #27ae60;">₺0.00</span>
+        </div>
+
+        <button onclick="sepetiKapat()" style="margin-top: 15px; width: 100%; background: #95a5a6; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">Kapat</button>
     </div>
     <script src="app.js"></script>
 </body>
