@@ -44,6 +44,21 @@ app.get('/api/urunler/category/:kategoriAdi', async (req, res) => {
     }
 });
 const PORT = 3000;
+app.get('/api/urunler/:id', async (req, res) => {
+    try {
+        const urunId = req.params.id;
+        const [urun] = await db.query('SELECT * FROM products WHERE id = ?', [urunId]);
+
+        if (urun.length === 0) {
+            return res.status(404).json({ mesaj: "Ürün bulunamadı"});
+        }
+        res.json(urun[0]);
+    } catch (hata) {
+        console.error("Ürün detayı çekerken hata:", hata);
+        res.status(500).json({ mesaj: "Sunucu hatası oluştu"});
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Yerel API başarıyla çalışıyor: http://localhost:${PORT}/api/urunler`);
 });

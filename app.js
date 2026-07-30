@@ -76,12 +76,16 @@ function ekranaBas(liste) {
     urunGrid.innerHTML = liste.map(urun => {
         return `
             <div style = "background: white; border: 1px solid #e0e0e0; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction:column; justify-content: space-between;">
-                <img src= "${urun.image}" style = "max-width: 100%; height: 175px; object-fit: contain; margin-bottom: 15px;">
-                <h4 style = "margin: 10px 0; font-size: medium; color: #333;">${urun.title.substring(0, 20)}...</h4>
-                <p style = font-size: large; color: #27ae60; font-weight: bold; margin: 10px 0;">₺${urun.price}</p>
-                <button style = "background: #2c3e50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;">Sepete Ekle</button>
+                
+                <a href="detay.html?id=${urun.id}" style="text-decoration: none; color: inherit; cursor: pointer;">
+                    <img src= "${urun.image}" style = "max-width: 100%; height: 175px; object-fit: contain; margin-bottom: 15px;">
+                    <h4 style = "margin: 10px 0; font-size: medium; color: #333;">${urun.title.substring(0, 20)}...</h4>
+                </a>
+
+                <p style="font-size: large; color: #27ae60; font-weight: bold; margin: 10px 0;">₺${urun.price}</p>
+                <button style="background: #2c3e50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;">Sepete Ekle</button>
             </div>
-            `;
+        `;
     }).join("");
 }
 urunleriGetir();
