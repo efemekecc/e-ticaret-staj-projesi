@@ -114,6 +114,7 @@ function sepeteEkle(id) {
         sepet.push(eklenenUrun);
         localStorage.setItem("sepet", JSON.stringify(sepet));
         sepetiGuncelle();
+        sepetiEkranaBas();
         alert(`${ekleneUrun.title.substring(0, 15)} sepete eklendi`);
     }
 }
