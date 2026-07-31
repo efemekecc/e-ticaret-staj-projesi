@@ -1,9 +1,10 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const app = express();
+app.use(express.json());
 const db = require('./db');
 app.use(cors());
-app.use(express.json());
 
 app.get('/api/urunler', async (req, res) => {
     try {
@@ -56,6 +57,51 @@ app.get('/api/urunler/:id', async (req, res) => {
     } catch (hata) {
         console.error("Ürün detayı çekerken hata:", hata);
         res.status(500).json({ mesaj: "Sunucu hatası oluştu"});
+    }
+});
+app.post('/api/register', async (req, res) => {
+    try {
+        console.log("Kayıt için gelen veri:", req.body);
+        const {name, surname, email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const sql = "INSERT INTO users (name, surname, email, password, is_active, adddate) VALUES (?, ?, ?, ?, 1, NOW())";
+        await db.query(sql, [name, surname, email, hashedPassword]);
+
+        res.status(201).json({ mesaj: "Kayıt işlemi başarılı."});
+    } catch (hata) {
+        console.error("Kayıt Hatası: ", hata);
+        res.status(500).json({ mesaj: "Sunucu hatası veya bu e-posta zaten kullanılıyor."});
+    }
+});
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const [users] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+
+        if (users.length === 0) {
+            return res.status(401).json({ mesaj: "Böyle bir kullanıcı bulunamadı." });
+        }
+        const user = users[0];
+        if (user.is_active === 0) {
+            return res.status(403).json({ mesaj: "Hesabınız askıya alınmış ya da pasif olabilir."});
+        }
+        const sifreDogruMu = await bcrypt.compare(password, user.password);
+
+        if(!sifreDogruMu) {
+            return res.status(401).json({ mesaj: "Şifreniz hatalı, lütfen tekrar deneyin." });
+        }
+        res.json({
+            mesaj: "Giriş başarılı!",
+            kullanici: {
+                id: user.id,
+                name: user.name,
+                surname: user.surname,
+                email: user.email
+            }
+        });
+    } catch (hata) {
+        console.error("Giriş hatası:", hata);
+        res.status(500).json({ mesaj: "Gieiş yapılırken sunucu hatası oluştu." });
     }
 });
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap / Kayıt Ol</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px;">
+        <a href="index.html" style="text-decoration: none; color: #2c3e50; font-weight: bold; font-size: medium;">&larr; Ana Sayfaya Dön</a>
+
+        <div style="display: flex; margin: 20px 0px; border-bottom: 2px solid #f1f2f6;">
+            <button onclick="formGoster('giris')" id="btn-giris" style = "flex: 1; padding: 10px; background: none; font-weight: bold; cursor: pointer; border-bottom: 3px solid #27ae60; color:#27ae60">Giriş Yap</button>
+            <button onclick="formGoster('kayit')" id="btn-kayit" style = "flex: 1; padding: 10px; background: none; font-weight: bold; cursor: pointer; color:#7f8c8d">Kayıt Ol</button>
+        </div>
+
+        <div id="form-giris">
+            <h3 style="color: #2c3e50; margin-top: 0;">Hesabınıza Giriş Yapın</h3>
+            <input type="email" id="giris-email" placeholder="E-posta Adresi" style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <input type="password" id="giris-sifre" placeholder="Şifre" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <button onclick="girisYap()" style="width: 100%; background: #27ae60; color: white; border:none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer;">Giriş Yap</button>
+        </div>
+
+        <div id="form-kayit" style="display: none;">
+            <h3 style="color: #2c3e50; margin-top: 0;">Yeni Hesap Oluştur</h3>
+            <input type="text" id="kayit-ad" placeholder="Ad" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <input type="text" id="kayit-soyad" placeholder="Soyad" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <input type="email" id="kayit-email" placeholder="E- Posta Adresi" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <input type="password" id="kayit-sifre" placeholder="Şifre" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <button onclick="kayitOl()" style="width: 100%; background: #2980b9; color: white; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer;">Kayıt Ol</button> 
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>
